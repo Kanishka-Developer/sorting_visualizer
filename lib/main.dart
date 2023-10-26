@@ -48,6 +48,9 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
       case "Selection Sort":
         await selectionSort(numbers);
         break;
+      case "Insertion Sort":
+        await insertionSort(numbers);
+        break;
     }
   }
 
@@ -90,6 +93,23 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
     }
   }
 
+  Future<void> insertionSort(List<int> numbers) async {
+    for (int i = 1; i < numbers.length; i++) {
+      int key = numbers[i];
+      int j = i - 1;
+      while (j >= 0 && numbers[j] > key) {
+        numbers[j + 1] = numbers[j];
+        j--;
+      }
+      numbers[j + 1] = key;
+
+      // Delay to visualize the sorting process
+      await Future.delayed(Duration(milliseconds: delay));
+
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +129,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
               "Bubble Sort",
               // Add other sorting algorithms here
               "Selection Sort",
+              "Insertion Sort",
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
