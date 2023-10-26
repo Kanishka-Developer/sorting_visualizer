@@ -51,6 +51,9 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
       case "Insertion Sort":
         await insertionSort(numbers);
         break;
+      case "Merge Sort":
+        await mergeSort(numbers);
+        break;
     }
   }
 
@@ -110,6 +113,77 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
     }
   }
 
+  Future<void> mergeSort(List<int> numbers) async {
+    await mergeSortHelper(numbers, 0, numbers.length - 1);
+  }
+
+  Future<void> mergeSortHelper(
+      List<int> numbers, int start, int end) async {
+    if (start < end) {
+      int mid = (start + end) ~/ 2;
+      await mergeSortHelper(numbers, start, mid);
+      await mergeSortHelper(numbers, mid + 1, end);
+      await merge(numbers, start, mid, end);
+    }
+  }
+
+  Future<void> merge(List<int> numbers, int start, int mid, int end) async {
+    int n1 = mid - start + 1;
+    int n2 = end - mid;
+
+    List<int> left = [];
+    List<int> right = [];
+
+    for (int i = 0; i < n1; i++) {
+      left.add(numbers[start + i]);
+    }
+    for (int j = 0; j < n2; j++) {
+      right.add(numbers[mid + 1 + j]);
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = start;
+
+    while (i < n1 && j < n2) {
+      if (left[i] <= right[j]) {
+        numbers[k] = left[i];
+        i++;
+      } else {
+        numbers[k] = right[j];
+        j++;
+      }
+      k++;
+
+      // Delay to visualize the sorting process
+      await Future.delayed(Duration(milliseconds: delay));
+
+      setState(() {});
+    }
+
+    while (i < n1) {
+      numbers[k] = left[i];
+      i++;
+      k++;
+
+      // Delay to visualize the sorting process
+      await Future.delayed(Duration(milliseconds: delay));
+
+      setState(() {});
+    }
+
+    while (j < n2) {
+      numbers[k] = right[j];
+      j++;
+      k++;
+
+      // Delay to visualize the sorting process
+      await Future.delayed(Duration(milliseconds: delay));
+
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,6 +204,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
               // Add other sorting algorithms here
               "Selection Sort",
               "Insertion Sort",
+              "Merge Sort",
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
