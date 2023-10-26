@@ -54,6 +54,9 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
       case "Merge Sort":
         await mergeSort(numbers);
         break;
+      case "Quick Sort":
+        await quickSort(numbers);
+        break;
     }
   }
 
@@ -184,6 +187,51 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
     }
   }
 
+  Future<void> quickSort(List<int> numbers) async {
+    await quickSortHelper(numbers, 0, numbers.length - 1);
+  }
+
+  Future<void> quickSortHelper(
+      List<int> numbers, int start, int end) async {
+    if (start < end) {
+      int partitionIndex = await partition(numbers, start, end);
+      await quickSortHelper(numbers, start, partitionIndex - 1);
+      await quickSortHelper(numbers, partitionIndex + 1, end);
+    }
+  }
+
+  Future<int> partition(List<int> numbers, int start, int end) async {
+    int pivot = numbers[end];
+    int i = start - 1;
+    for (int j = start; j < end; j++) {
+      if (numbers[j] < pivot) {
+        i++;
+
+        // Swap numbers[i] and numbers[j]
+        int temp = numbers[i];
+        numbers[i] = numbers[j];
+        numbers[j] = temp;
+
+        // Delay to visualize the sorting process
+        await Future.delayed(Duration(milliseconds: delay));
+
+        setState(() {});
+      }
+    }
+
+    // Swap numbers[i + 1] and numbers[end]
+    int temp = numbers[i + 1];
+    numbers[i + 1] = numbers[end];
+    numbers[end] = temp;
+
+    // Delay to visualize the sorting process
+    await Future.delayed(Duration(milliseconds: delay));
+
+    setState(() {});
+
+    return i + 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,6 +253,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
               "Selection Sort",
               "Insertion Sort",
               "Merge Sort",
+              "Quick Sort",
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
