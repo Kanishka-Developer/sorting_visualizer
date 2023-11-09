@@ -2,18 +2,22 @@ import "package:flutter/material.dart";
 import "dart:math";
 import "dart:async";
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: SortingVisualizer(),
     );
   }
 }
 
 class SortingVisualizer extends StatefulWidget {
+  const SortingVisualizer({super.key});
+
   @override
   _SortingVisualizerState createState() => _SortingVisualizerState();
 }
@@ -21,8 +25,8 @@ class SortingVisualizer extends StatefulWidget {
 class _SortingVisualizerState extends State<SortingVisualizer> {
   List<int> numbers = [];
   String selectedAlgorithm = "Bubble Sort";
-  double containerWidth = 20.0;
-  int delay = 50; // Delay between each step in milliseconds
+  double containerWidth = 8.0;
+  int delay = 20; // Delay between each step in milliseconds
 
   @override
   void initState() {
@@ -33,7 +37,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
   void generateRandomNumbers() {
     Random random = Random();
     numbers.clear();
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 50; i++) {
       numbers.add(random.nextInt(101));
     }
     setState(() {});
@@ -236,7 +240,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sorting Visualizer"),
+        title: const Text("Sorting Visualizer"),
       ),
       body: Column(
         children: <Widget>[
@@ -263,7 +267,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
           ),
           ElevatedButton(
             onPressed: generateRandomNumbers,
-            child: Text("Generate Rectangles"),
+            child: const Text("Generate Rectangles"),
           ),
           // Render rectangles with AnimatedContainer for sorting visualization
           Expanded(
@@ -280,7 +284,7 @@ class _SortingVisualizerState extends State<SortingVisualizer> {
           ),
           ElevatedButton(
             onPressed: sortNumbers,
-            child: Text("Sort"),
+            child: const Text("Sort"),
           ),
         ],
       ),
